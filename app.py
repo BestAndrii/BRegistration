@@ -38,24 +38,34 @@ class Window(QMainWindow):
         # Получаем логины из базы данных
         logins = db.get_logins()
 
-        # Проверяем есть ли введёный логин в базе данных
-        for log in logins:
-            if log[0] == login:
-                normal_password = db.get_password(login)
+        if login:
+            # Проверяем есть ли введёный логин в базе данных
+            for log in logins:
+                if log[0] == login:
+                    normal_password = db.get_password(login)
 
-                if password == normal_password:
-                    message = "Успешная авторизация в систему!"
-                    self.show_message("Успешная авторизация!", message)
-                    break
+                    if password:
+                        if password == normal_password:
+                            message = "Успешная авторизация в систему!"
+                            self.show_message("Успешная авторизация!", message)
+                            break
 
-                else:
-                    message = f"Вы ввели неверный пароль для пользователя {login}"
-                    self.show_message("Неверный пароль", message)
-                    break
+                        else:
+                            message = f"Вы ввели неверный пароль для пользователя {login}"
+                            self.show_message("Неверный пароль", message)
+                            break
+
+                    else:
+                        message = "Вы не ввели пароль"
+                        self.show_message("Не указан пароль", message)
+
+            else:
+                message = "Такого логина нет, попробуйте ещё раз"
+                self.show_message("Такого логина нет", message)
 
         else:
-            message = "Такого логина нет, попробуйте ещё раз"
-            self.show_message("Такого логина нет", message)
+            message = "Вы не ввели логин"
+            self.show_message("Не указан логин", message)
 
     def registration(self):
         """Зарегистрироваться в базу данных."""
@@ -64,19 +74,29 @@ class Window(QMainWindow):
         login = self.ui.name.text()
         password = self.ui.password.text()
 
-        try:
-            # Добавляем логин и пароль в базу
-            db.add_items(login, password)
+        if login:
+            if password:
+                try:
+                    # Добавляем логин и пароль в базу
+                    db.add_items(login, password)
 
-            message = f"Успешная регистрация в базу под логином {login}!"
-            self.show_message("Успешная регистрация!", message)
+                    message = f"Успешная регистрация в базу под логином {login}!"
+                    self.show_message("Успешная регистрация!", message)
 
-            db.base.commit()
+                    db.base.commit()
 
-        # Если логин уже существует
-        except IntegrityError:
-            message = "Такой логин уже существует в базе данных!"
-            self.show_message("Логин уже существует", message)
+                # Если логин уже существует
+                except IntegrityError:
+                    message = "Такой логин уже существует в базе данных!"
+                    self.show_message("Логин уже существует", message)
+
+            else:
+                message = "Такого логина нет, попробуйте ещё раз"
+                self.show_message("Такого логина нет", message)
+
+        else:
+            message = "Вы не ввели логин"
+            self.show_message("Не указан логин", message)
 
 
 def start_app():
