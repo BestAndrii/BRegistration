@@ -44,20 +44,15 @@ class Window(QMainWindow):
                 if log[0] == login:
                     normal_password = db.get_password(login)
 
-                    if password:
-                        if password == normal_password:
-                            message = "Успешная авторизация в систему!"
-                            self.show_message("Успешная авторизация!", message)
-                            break
-
-                        else:
-                            message = f"Вы ввели неверный пароль для пользователя {login}"
-                            self.show_message("Неверный пароль", message)
-                            break
+                    if password == normal_password:
+                        message = "Успешная авторизация в систему!"
+                        self.show_message("Успешная авторизация!", message)
+                        break
 
                     else:
-                        message = "Вы не ввели пароль"
-                        self.show_message("Не указан пароль", message)
+                        message = f"Вы ввели неверный пароль для пользователя {login}"
+                        self.show_message("Неверный пароль", message)
+                        break
 
             else:
                 message = "Такого логина нет, попробуйте ещё раз"
