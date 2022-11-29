@@ -5,5 +5,4 @@ English version of my registration program.
 I made this project to practice on the database, since I can forget everything without practice.
 
 # Software demo
-<img src="SoftwarePhoto" width=300>
-
+<img src="SoftwarePhoto.png" width=300>
